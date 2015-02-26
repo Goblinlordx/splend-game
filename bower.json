@@ -3,7 +3,6 @@
   "private": true,
   "dependencies": {
     "polymer": "Polymer/polymer#master",
-    "core-card": "Polymer/core-card#master",
     "core-component-page": "Polymer/core-component-page#master",
     "core-icons": "Polymer/core-icons#master",
     "core-icon-button": "Polymer/core-icon-button#master",
