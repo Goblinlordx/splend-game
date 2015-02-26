@@ -4,6 +4,7 @@
   "dependencies": {
     "polymer": "Polymer/polymer#master",
     "polymer": "Polymer/core-card#master",
+    "polymer": "Polymer/core-component-page#master",
     "polymer": "Polymer/core-icons#master",
     "polymer": "Polymer/core-icon-button#master",
     "polymer": "Polymer/core-overlay#master",
