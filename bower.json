@@ -13,5 +13,6 @@
     "polymer": "Polymer/paper-ripple#master",
     "polymer": "Polymer/paper-shadow#master",
     "polymer": "Polymer/paper-toast#master",
-    "polymer": "Polymer/paper-toggle-button#master",
+    "polymer": "Polymer/paper-toggle-button#master"
+  }
 }
