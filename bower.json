@@ -10,6 +10,7 @@
     "paper-button": "Polymer/paper-button#master",
     "paper-fab": "Polymer/paper-fab#master",
     "paper-icon-button": "Polymer/paper-icon-button#master",
+    "paper-input": "Polymer/paper-input#master",
     "paper-ripple": "Polymer/paper-ripple#master",
     "paper-shadow": "Polymer/paper-shadow#master",
     "paper-toast": "Polymer/paper-toast#master",
