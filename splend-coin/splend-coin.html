@@ -1,0 +1,46 @@
+<link rel="import" href="../../polymer/polymer.html">
+
+<polymer-element name="splend-coin" attributes="color textColor supply highlight type">
+
+  <template>
+    <style>
+      #svg_graphic {
+        position: relative;
+        border-radius: 26px;
+      }
+      .hlight {
+        box-shadow: 1px 1px 8px rgba(46,204,113,0.5) , -1px -1px 8px rgba(46,204,113,0.5) , 1px -1px 8px rgba(46,204,113,0.5) , -1px 1px 8px rgba(46,204,113,0.5) ;
+        -webkit-transition: text-shadow 250ms cubic-bezier(0.42, 0, 0.58, 1);
+        -moz-transition: text-shadow 250ms cubic-bezier(0.42, 0, 0.58, 1);
+        -o-transition: text-shadow 250ms cubic-bezier(0.42, 0, 0.58, 1);
+        transition: text-shadow 250ms cubic-bezier(0.42, 0, 0.58, 1);
+      }
+      #paper_ripple {
+        height: auto;
+        width: auto;
+      }
+    </style>
+    <core-card on-tap="{{ coinClick }}">
+        <svg id="svg_graphic" class="{{ { hlight: highlight } | tokenList }}" width="52" height="52">
+          <circle cx="26" cy="26" r="25" fill="{{color}}" stroke-width="1" stroke="#B6B6B6" />
+          <text x="26" y="35" text-anchor="middle" font-family="times-new-roman" font-size="25px" fill="{{textColor}}">{{supply}}</text>
+        </svg>
+    </core-card>
+  </template>
+
+  <script>
+
+    Polymer({
+      color:"#FF9800",
+      textColor:"white",
+      supply: 0,
+      highlight: false,
+      type: 1,
+      coinClick: function (e) {
+        this.fire('coin-clicked', { type: this.type } );
+      },
+    });
+
+  </script>
+
+</polymer-element>

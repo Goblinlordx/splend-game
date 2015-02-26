@@ -1,0 +1,37 @@
+<link href="../splend-coin/splend-coin.html" rel="import">
+
+<polymer-element name="splend-coinbar" attributes="coinState supply">
+
+  <template>
+    <style>    
+      #core_card {
+        width: auto;
+        height: auto;
+        padding: 7px;
+        background-color: rgb(255, 255, 255);
+        border-radius: 2px;
+      }
+      #splend_coin {
+        padding: 4px;
+      }
+    </style>
+    <core-card id="core_card" layout vertical center center-justified>
+      <splend-coin color="white" type="1" textcolor="black" supply="{{ supply[0] }}" highlight="{{coinState[0]}}" id="splend_coin"></splend-coin>
+      <splend-coin color="#0288D1" type="2" textcolor="white" supply="{{ supply[1] }}" highlight="{{coinState[1]}}"  id="splend_coin"></splend-coin>
+      <splend-coin color="#4CAF50" type="3" textcolor="white" supply="{{ supply[2] }}" highlight="{{coinState[2]}}"  id="splend_coin"></splend-coin>
+      <splend-coin color="#E91E63" type="4" textcolor="white" supply="{{ supply[3] }}" highlight="{{coinState[3]}}"  id="splend_coin"></splend-coin>
+      <splend-coin color="black" type="5" supply="{{ supply[4] }}" highlight="{{coinState[4]}}"  id="splend_coin"></splend-coin>
+      <splend-coin color="#FFEB3B" type="6" textcolor="black" supply="{{ supply[5] }}" highlight="{{coinState[5]}}"  id="splend_coin"></splend-coin>
+    </core-card>
+  </template>
+
+  <script>
+
+    Polymer({
+      supply: [0,0,0,0,0,0],
+      coinState: [false, false, false, false, false],
+    });
+
+  </script>
+
+</polymer-element>

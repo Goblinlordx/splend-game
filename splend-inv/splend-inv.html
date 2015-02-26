@@ -1,0 +1,92 @@
+<link href="../../core-icons/core-icons.html" rel="import">
+<link href="../../paper-icon-button/paper-icon-button.html" rel="import">
+<link href="../splend-card/splend-card.html" rel="import">
+
+<polymer-element name="splend-inv" attributes="pName inventory">
+
+  <template>
+    <style>
+      #splend_card {
+        padding: 8px 8px;
+      }
+      #core_card {
+        height: auto;
+        width: auto;
+        max-width: 496px;
+        background-color: rgb(255, 255, 255);
+        border-radius: 2px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.098), 0px 0px 3px rgba(0, 0, 0, 0.098);
+      }
+      #paper_icon_button {
+        width: auto;
+      }
+      #top_bar {
+        font-size: 20px;
+        font-weight: bold;
+        background-color: #455A64;
+        color: white;
+      }
+      #title_margin {
+        min-width: 6px;
+      }
+    </style>
+    <core-card id="core_card" vertical layout>
+      <div id="top_bar" start-justified center horizontal layout>
+        <span id="title_margin" flex></span>
+        {{ pName }}'s Reserved Cards
+        <span id="title_margin" flex></span>
+        <paper-icon-button icon="close" id="paper_icon_button" on-tap="{{ invClose }}"></paper-icon-button>
+      </div>
+      <div id="inv_cards" layout horizontal around-justified>
+        <template repeat="{{card in inventory}}">
+          <splend-card cid="{{card.cid}}" tier="{{card.tier}}" white="{{card.white}}" blue="{{card.blue}}" green="{{card.green}}" red="{{card.red}}" black="{{card.black}}" vp="{{card.vp}}" supply="{{card.supply}}" rFlag="true" id="splend_card"></splend-card>
+        </template>
+      </div>
+      </core-card>
+  </template>
+
+  <script>
+
+    Polymer({
+      pName: "Test",
+      inventory: [{
+    		      "tier":1,
+      				"white":1,
+      				"blue":2,
+     					"green":1,
+      				"red":5,
+      				"black":4,
+      				"vp":1,
+      				"supply":1,
+      				"tier_text": '',
+      				"deck_count": '',
+    },{
+    		      "tier":1,
+      				"white":1,
+      				"blue":2,
+     					"green":1,
+      				"red":5,
+      				"black":4,
+      				"vp":1,
+      				"supply":5,
+      				"tier_text": '',
+      				"deck_count": '',
+    },{
+    		      "tier":1,
+      				"white":1,
+      				"blue":2,
+     					"green":0,
+      				"red":5,
+      				"black":4,
+      				"vp":0,
+      				"supply":3,
+      				"tier_text": '',
+      "deck_count": ''}],
+      invClose: function (e) {
+        this.fire('invClose');
+      },
+    });
+
+  </script>
+
+</polymer-element>

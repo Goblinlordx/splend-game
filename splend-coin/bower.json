@@ -1,0 +1,7 @@
+{
+  "name": "splend-coin",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer#master",
+  }
+}

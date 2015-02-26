@@ -1,0 +1,59 @@
+<link href="../../core-icons/core-icons.html" rel="import">
+<link href="../../core-icons/av-icons.html" rel="import">
+<link href="../../paper-fab/paper-fab.html" rel="import">
+<link href="../../paper-icon-button/paper-icon-button.html" rel="import">
+<link href="../../paper-fab/paper-ripple.html" rel="import">
+
+<polymer-element attributes="pid name" name="splend-setup-plist-item">
+
+  <template>
+    <style>    
+      #design_host {
+        width: auto;
+        height: auto;
+        box-sizing: border-box;
+        display: block;
+      }
+      #p_list_item {
+        width: auto;
+        height: auto;
+        min-width: 50px;
+        background-color: rgb(255, 255, 255);
+        border-radius: 8px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.098), 0px 0px 3px rgba(0, 0, 0, 0.098);
+        padding-left: 10px;
+      }
+      #p_list_text {
+        margin: 0px 5px;
+      }
+      #text_padding {
+        width: 8px;
+      }
+      #splend_remove {
+        position: relative;
+      }
+    </style>
+    <core-card id="p_list_item" start-justified center horizontal layout>
+      <paper-icon-button icon="close" id="paper_remove" on-tap="{{removeme}}"></paper-icon-button>
+      <span id="text_padding"></span>
+      <div id="p_list_text">
+        <h3>{{ name }}</h3>
+      </div>
+      <span id="text_padding"></span>
+    </core-card>
+  </template>
+
+  <script>
+
+
+    Polymer({
+      pid: 0,
+      name: 'Test Player Name',
+      removeme: function() {
+	setTimeout(this.fire('removeme', { pid: this.pid }),700);
+      },
+    });
+
+  </script>
+
+</polymer-element>

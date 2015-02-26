@@ -1,0 +1,192 @@
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../core-card/core-card.html">
+<link href="../../paper-shadow/paper-shadow.html" rel="import">
+
+<polymer-element name="splend-p" attributes="activeplayer pid name vp white white_p blue blue_p green green_p red red_p black black_p res inventory">
+
+  <template>
+    <style>
+      #design_host {
+        display: block;
+        box-sizing: border-box;
+      }
+      #splend_p {
+        width: auto;
+        height: auto;
+        min-width: 200px;
+        min-height: 150px;
+        background-color: rgb(255, 255, 255);
+        border-radius: 2px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.098), 0px 0px 3px rgba(0, 0, 0, 0.098);
+      }
+      #header {
+        padding: 4px;
+        height: 30px;
+        background-color: rgb(33, 33, 33);
+      }
+      .activep {
+        text-shadow: 1px 1px 8px rgba(46,204,113,0.5) , -1px -1px 8px rgba(46,204,113,0.5) , 1px -1px 8px rgba(46,204,113,0.5) , -1px 1px 8px rgba(46,204,113,0.5) ;
+        -webkit-transition: text-shadow 250ms cubic-bezier(0.42, 0, 0.58, 1);
+        -moz-transition: text-shadow 250ms cubic-bezier(0.42, 0, 0.58, 1);
+        -o-transition: text-shadow 250ms cubic-bezier(0.42, 0, 0.58, 1);
+        transition: text-shadow 250ms cubic-bezier(0.42, 0, 0.58, 1);
+      }
+      #name {
+        -webkit-transition: text-shadow 250ms 0.5s ease;
+        -moz-transition: text-shadow 250ms 0.5s ease;
+        -o-transition: text-shadow 250ms 0.5s ease;
+        /*background-color: rgb(33, 33, 33);*/
+        white-space: nowrap;
+        padding: 4px;
+        width: auto;
+        height: 30px;
+        font-weight: bold;
+        font-size: 22px;
+        color: rgb(245, 245, 245);
+      }
+      #vp {
+        padding: 4px;
+        width: 30px;
+        height: 30px;
+        color: white;
+        font-weight: bold;
+        font-size: 15px;
+        background-color: rgb(255, 152, 0);
+      }
+      #supply {
+        width: 100%;
+        height: 100%;
+      }
+      #val_icon {
+        margin: 5px;
+      }
+      #res {
+        width: 100%;
+      }
+    </style>
+    <core-card id="splend_p" layout vertical>
+      <paper-shadow z="1">
+        <div>
+        <div id="header" layout horizontal center around-justified>
+          <div id="name" class="{{ { activep: activeplayer } | tokenList }}">{{ name }}</div>
+          <div id="vp" layout horizontal center center-justified>{{ vp }}</div>
+        </div>
+        <div id="supply" on-tap="{{ invClick }}" layout horizontal center center-justified>
+          <div id="white" layout vertical center center-justified>
+        	<svg width="24" height="24" id="val_icon">
+						<circle cx="12" cy="12" r="12" fill="white" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="black">{{white}}</text>
+					</svg>
+        	<svg width="24" height="24" id="val_icon">
+						<rect height="24" width="24" fill="white" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="black">{{white_p}}</text>
+					</svg>
+        	<svg width="24" height="24" id="val_icon">
+						<polygon points="0,24 4,0 20,0 24,24" fill="white" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="black">{{white + white_p}}</text>
+					</svg>
+          </div>
+          <div id="blue" layout vertical center center-justified>
+        	<svg width="24" height="24" id="val_icon">
+						<circle cx="12" cy="12" r="12" fill="#0288D1" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="white">{{blue}}</text>
+					</svg>
+        	<svg width="24" height="24" id="val_icon">
+						<rect height="24" width="24" fill="#0288D1" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="white">{{blue_p}}</text>
+					</svg>
+        	<svg width="24" height="24" id="val_icon">
+						<polygon points="0,24 4,0 20,0 24,24" fill="#0288D1" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="white">{{blue + blue_p}}</text>
+					</svg>
+          </div>
+          <div id="green" layout vertical center center-justified>
+        	<svg width="24" height="24" id="val_icon">
+						<circle cx="12" cy="12" r="12" fill="#4CAF50" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="white">{{green}}</text>
+					</svg>
+        	<svg width="24" height="24" id="val_icon">
+						<rect height="24" width="24" fill="#4CAF50" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="white">{{green_p}}</text>
+					</svg>
+        	<svg width="24" height="24" id="val_icon">
+						<polygon points="0,24 4,0 20,0 24,24" fill="#4CAF50" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="white">{{green + green_p}}</text>
+					</svg>
+          </div>
+          <div id="red" layout vertical center center-justified>
+        	<svg width="24" height="24" id="val_icon">
+						<circle cx="12" cy="12" r="12" fill="#E91E63" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="white">{{red}}</text>
+					</svg>
+        	<svg width="24" height="24" id="val_icon">
+						<rect height="24" width="24" fill="#E91E63" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="white">{{red_p}}</text>
+					</svg>
+        	<svg width="24" height="24" id="val_icon">
+						<polygon points="0,24 4,0 20,0 24,24" fill="#E91E63" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="white">{{red + red_p}}</text>
+					</svg>
+          </div>
+          <div id="black" layout vertical center center-justified>
+        	<svg width="24" height="24" id="val_icon">
+						<circle cx="12" cy="12" r="12" fill="black" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="white">{{black}}</text>
+					</svg>
+        	<svg width="24" height="24" id="val_icon">
+						<rect height="24" width="24" fill="black" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="white">{{black_p}}</text>
+					</svg>
+        	<svg width="24" height="24" id="val_icon">
+						<polygon points="0,24 4,0 20,0 24,24" fill="black" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="white">{{black + black_p}}</text>
+					</svg>
+          </div>
+        
+        </div>
+        <div id="res" on-tap="{{ invClick }}" layout horizontal center center-justified>
+          <span flex></span>
+          <svg width="24" height="24" id="val_icon">
+            <circle cx="12" cy="12" r="12" fill="#FFEB3B" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="black">{{res}}</text>
+	  </svg>
+          <svg width="26" height="26" id="val_icon">
+	    <rect height="24" width="24" fill="black" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="white">{{inventory.length}}</text>
+	  </svg>
+          <span flex></span>
+        </div>
+        </div>
+      </paper-shadow>
+    </core-card>
+  </template>
+
+  <script>
+
+    Polymer({
+      pid: 0,
+      activeplayer: false,
+      name: 'Test P',
+      vp: 5,
+      white: 1,
+      white_p: 4,
+      blue:7,
+      blue_p:5,
+      green:7,
+      green_p:7,
+      red:2,
+      red_p:11,
+      black:12,
+      black_p:1,
+      res: 0,
+      inventory: [],
+      
+      invClick: function (e) {
+        console.log(this.activeplayer);
+        this.fire('inv-clicked', { pid: this.pid } );      
+      },
+    });
+
+  </script>
+
+</polymer-element>

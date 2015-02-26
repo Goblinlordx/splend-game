@@ -1,0 +1,11 @@
+{
+  "name": "splend-setup",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer#master",
+    "polymer": "Polymer/paper-fab#master",
+    "polymer": "Polymer/core-icons#master",
+    "polymer": "Polymer/paper-toggle-button#master",
+    "polymer": "https://github.com/Goblinlordx/splend-setup-plist-item.git",
+  }
+}

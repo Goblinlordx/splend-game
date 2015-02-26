@@ -1,0 +1,237 @@
+<link href="../../core-icon-button/core-icon-button.html" rel="import">
+<link href="../../paper-shadow/paper-shadow.html" rel="import">
+<link href="../../paper-ripple/paper-ripple.html" rel="import">
+
+<polymer-element name="splend-card" attributes="tier white blue green red black vp supply cid rFlag">
+
+  <template>
+    <style>
+      paper-ripple {
+				color: #FFFFFF;
+			}
+      #design_host {
+        display: block;
+        width: 144px;
+        height: 84px;
+        box-sizing: border-box;
+      }
+      #cre_card {
+        width: 144px;
+        height: 84px;
+        background-color: #CFD8DC;
+        border-radius: 0px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.098), 0px 0px 3px rgba(0, 0, 0, 0.098);
+        left: 0px;
+        top: 0px;
+      }
+      #cre_header_panel {
+        width: 300px;
+        height: 400px;
+        left: 1100px;
+        top: 530px;
+      }
+      #cre_toolbar {
+        height: 26px;
+        right: 0px;
+        font-family: "Times New Roman";
+        font-size: 22px;
+        background-color: rgb(0, 0, 0);
+        color: rgb(255, 255, 255);
+        fill: rgb(255, 255, 255);
+      }
+      #section {
+        height: 58px;
+      }
+      #section_left {
+        height: auto;
+        background-color: #FFF9C4;
+      }
+      #section_center {
+        height: 100%;
+        font-size: 36px;
+        font-weight: bold;
+      }
+      #section_right {
+        height: 100%;
+      }
+      #val_icon {
+        margin: 2px;
+      }
+    </style>
+    <core-card id="cre_card" on-tap="{{cardClicked}}" vertical layout>
+    <paper-shadow z="1">
+    <paper-ripple fit></paper-ripple>
+      <section>
+      <div id="cre_toolbar" layout horizontal center center-justified>{{ tier_text }}
+      </div>
+      <section id="section" layout vertical>
+        <section id="section_left" layout horizontal center-justified center>
+          <template if="{{vp > 0 && tier < 5}}">
+            	<svg width="24" height="24" z="1" id="val_icon">
+				    		<circle cx="12" cy="12" r="12" fill="#FF9800" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="white">{{ vp }}</text>
+    					</svg>
+          </template>
+        </section>
+        <template if="{{ tier > 4 }}">
+        <section id="section_center" flex layout horizontal center center-justified>
+          {{ supply }}
+        </section>
+        </template>
+        <template if="{{ tier < 5 }}">
+        <section id="section_right" layout horizontal center center-justified>
+          <template if="{{white > 0  && tier < 4}}">
+        	<svg width="24" height="24" id="val_icon">
+						<circle cx="12" cy="12" r="12" fill="white" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="black">{{white}}</text>
+					</svg>
+          </template>
+          <template if="{{blue > 0  && tier < 4}}">
+        	<svg width="24" height="24" id="val_icon">
+						<circle cx="12" cy="12" r="12" fill="#0288D1" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="white">{{blue}}</text>
+					</svg>
+          </template>
+          <template if="{{green > 0  && tier < 4}}">
+        	<svg width="24" height="24" id="val_icon">
+						<circle cx="12" cy="12" r="12" fill="#4CAF50" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="white">{{green}}</text>
+					</svg>
+          </template>
+          <template if="{{red > 0  && tier < 4}}">
+        	<svg width="24" height="24" id="val_icon">
+						<circle cx="12" cy="12" r="12" fill="#E91E63" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="white">{{red}}</text>
+					</svg>
+          </template>
+          <template if="{{black > 0  && tier < 4}}">
+        	<svg width="24" height="24" id="val_icon">
+						<circle cx="12" cy="12" r="12" fill="black" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="white">{{black}}</text>
+					</svg>
+          </template>
+          <template if="{{white > 0  && tier == 4}}">
+        	<svg width="24" height="24" id="val_icon">
+						<rect height="24" width="24" fill="white" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="black">{{white}}</text>
+					</svg>
+          </template>
+          <template if="{{blue > 0  && tier == 4}}">
+        	<svg width="24" height="24" id="val_icon">
+						<rect height="24" width="24" fill="#0288D1" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="white">{{blue}}</text>
+					</svg>
+          </template>
+          <template if="{{green > 0  && tier == 4}}">
+        	<svg width="24" height="24" id="val_icon">
+						<rect height="24" width="24" fill="#4CAF50" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="white">{{green}}</text>
+					</svg>
+          </template>
+          <template if="{{red > 0  && tier == 4}}">
+        	<svg width="24" height="24" id="val_icon">
+						<rect height="24" width="24" fill="#E91E63" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="white">{{red}}</text>
+					</svg>
+          </template>
+          <template if="{{black > 0  && tier == 4}}">
+        	<svg width="24" height="24" id="val_icon">
+						<rect height="24" width="24" fill="black" stroke-width="1" stroke="#B6B6B6" />
+                <text x="12" y="18" text-anchor="middle" font-family="times-new-roman" font-size="19px" fill="white">{{black}}</text>
+					</svg>
+          </template>
+        </section>
+        </template>
+      </section>
+      </section></paper-shadow>
+    </core-card>
+  </template>
+
+  <script>
+
+    Polymer({
+      cid:0,
+      tier:5,
+      white:1,
+      blue:2,
+      green:1,
+      red:5,
+      black:4,
+      vp:1,
+      supply:40,
+      tier_text: '',
+      deck_count: '',
+      rFlag: false,
+     
+      ready: function() {
+        switch(this.tier){
+          case 1:
+            this.tier_text = "I";
+            break;
+          case 2:
+            this.tier_text = "II";
+            break;
+          case 3:
+            this.tier_text = "III";
+            break;
+          case 4:
+            this.tier_text = "IV";
+            break;
+          case 5:
+	      		this.$.cre_toolbar.style.backgroundColor = "#455A64";
+            this.deck_count = this.supply;
+            this.tier_text = "I";
+            break;
+          case 6:
+	      		this.$.cre_toolbar.style.backgroundColor = "#455A64";
+            this.deck_count = this.supply;
+            this.tier_text = "II";
+            break;
+          case 7:
+	      		this.$.cre_toolbar.style.backgroundColor = "#455A64";
+            this.deck_count = this.supply;
+            this.tier_text = "III";
+            break;
+          case 8:
+	      		this.$.cre_toolbar.style.backgroundColor = "#455A64";
+            this.deck_count = this.supply;
+            this.tier_text = "IV";
+            break;
+        };
+        if (this.tier < 5 && this.tier > 0) {
+          switch(this.supply){
+	          case 0:
+	        		this.$.cre_toolbar.style.backgroundColor = "#FF9800";
+	        		this.$.cre_toolbar.style.color = "white";
+	            break;
+	          case 1:
+  	      		this.$.cre_toolbar.style.backgroundColor = "white";
+  	      		this.$.cre_toolbar.style.color = "black";
+  	          break;
+  	        case 2:
+  	      		this.$.cre_toolbar.style.backgroundColor = "#0288D1";
+  	      		this.$.cre_toolbar.style.color = "white";
+  	          break;
+  	        case 3:
+    	    		this.$.cre_toolbar.style.backgroundColor = "#4CAF50";
+  	      		this.$.cre_toolbar.style.color = "white";
+  	          break;
+  	        case 4:
+  	       		this.$.cre_toolbar.style.backgroundColor = "#E91E63";
+  	      		this.$.cre_toolbar.style.color = "white";
+  	          break;
+
+  	      };
+        };
+       
+      },
+      cardClicked: function (e) {
+        // console.log('splend-card: firing card-clicked')
+        this.fire('card-clicked', { cid: this.cid , rFlag: this.rFlag } );
+      },
+      
+    });
+
+  </script>
+
+</polymer-element>

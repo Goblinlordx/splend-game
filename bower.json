@@ -1,0 +1,17 @@
+{
+  "name": "splend-game",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer#master",
+    "polymer": "Polymer/core-card#master",
+    "polymer": "Polymer/core-icons#master",
+    "polymer": "Polymer/core-icon-button#master",
+    "polymer": "Polymer/core-overlay#master",
+    "polymer": "Polymer/paper-button#master",
+    "polymer": "Polymer/paper-fab#master",
+    "polymer": "Polymer/paper-icon-button#master",
+    "polymer": "Polymer/paper-ripple#master",
+    "polymer": "Polymer/paper-shadow#master",
+    "polymer": "Polymer/paper-toast#master",
+    "polymer": "Polymer/paper-toggle-button#master",
+}

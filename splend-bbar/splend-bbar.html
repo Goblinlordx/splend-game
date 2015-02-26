@@ -1,0 +1,76 @@
+<link href="../../paper-button/paper-button.html" rel="import">
+
+<polymer-element name="splend-bbar" attributes="buttonStates">
+
+  <template>
+    <style>    
+      #core_card {
+        background-color: rgb(255, 255, 255);
+      }
+      #paper_button {
+        min-width: 134px;
+        width: 100px;
+        height: 40px;
+        border-radius: 5px;
+        margin: 4px 6px;
+      }
+    </style>
+    <core-card id="core_card" horizontal layout>
+      <paper-button id="paper_button" disabled?="{{ buttonStates[0] }}" raised layout horizontal center-center flex inline on-tap="{{ actPcard }}">Purchase Card</paper-button>
+      <paper-button id="paper_button" disabled?="{{ buttonStates[1] }}" raised layout horizontal center-center flex inline on-tap="{{ actRcard }}">Reserve Card</paper-button>
+      <paper-button id="paper_button" disabled?="{{ buttonStates[2] }}" raised layout horizontal center-center flex inline on-tap="{{ actCoin3 }}">Take coins (3)</paper-button>
+      <paper-button id="paper_button" disabled?="{{ buttonStates[3] }}" raised layout horizontal center-center flex inline on-tap="{{ actCoin2 }}">Take coins (2)</paper-button>
+      <paper-button id="paper_button" disabled?="{{ buttonStates[4] }}" raised layout horizontal center-center flex inline on-tap="{{ actCancel }}">Cancel</paper-button>
+    </core-card>
+  </template>
+
+  <script>
+
+    Polymer({
+      buttonStates: [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      ready: function () {
+        this.addEventListener('act-buttonstate', this.actState);
+        this.fire('act-button-state', { buttons: this.buttonStates });
+      },
+      actState: function (e){
+        console.log("BBAR: Saw new button state event");
+        if(e.detail.buttons.length != 5) {
+          console.log("Fail validation test");
+          this.fire('splend-message', "Error: Invalid action button state received");
+          return;
+        };
+        for(i=0;i<e.detail.buttons.length;i++){
+          if((typeof e.detail.buttons[i]) != "boolean") {
+            console.log("Fail validation test");
+            this.fire('splend-message', "Error: Invalid action button state received");
+            return;
+          };
+        };
+        this.buttonStates = e.detail.buttons;
+      },
+      actPcard: function (e) {
+        this.fire('splend-act-pcard');
+      },
+      actRcard: function (e) {
+        this.fire('splend-act-rcard');
+      },
+      actCoin3: function (e) {
+        this.fire('splend-act-coin3');
+      },
+      actCoin2: function (e) {
+        this.fire('splend-act-coin2');
+      },
+      actCancel: function (e) {
+        this.fire('splend-act-cancel');
+      },
+    });
+
+  </script>
+
+</polymer-element>

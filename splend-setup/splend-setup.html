@@ -1,0 +1,162 @@
+<link href="../splend-setup-plist-item/splend-setup-plist-item.html" rel="import">
+<link href="../../paper-input/paper-input.html" rel="import">
+<link href="../../paper-toggle-button/paper-toggle-button.html" rel="import">
+<link href="../../core-icons/core-icons.html" rel="import">
+<link href="../../core-icons/av-icons.html" rel="import">
+<link href="../../paper-fab/paper-fab.html" rel="import">
+<link async href="http://fonts.googleapis.com/css?family=Aldrich" rel="stylesheet" type="text/css"/>
+
+<polymer-element name="splend-setup">
+
+  <template>
+    <style>
+      :host {
+        display: inline-block;
+      }
+      #core_card {
+        min-width: 300px;
+        height: auto;
+        background-color: #9E9E9E;
+        border-radius: 2px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.098), 0px 0px 3px rgba(0, 0, 0, 0.098);
+      }
+      #setup_title {
+        padding-left: 20px;
+        padding-right: 20px;
+        display: block;
+        -webkit-box-sizing: content-box;
+        -moz-box-sizing: content-box;
+        box-sizing: content-box;
+        float: none;
+        z-index: auto;
+        width: auto;
+        height: auto;
+        position: static;
+        cursor: default;
+        opacity: 1;
+        margin: 0;
+        overflow: visible;
+        border: none;
+        -webkit-border-radius: 0;
+        border-radius: 0;
+        font: normal normal 900 70px/normal "Aldrich", Helvetica, sans-serif;
+        color: rgb(32, 44, 45);
+        text-align: center;
+        -o-text-overflow: clip;
+        text-overflow: clip;
+        background: none;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        text-shadow: 0 1px 0 rgb(128,141,147) , -1px 0 0 rgb(205,210,213) , -1px 2px 0 rgb(128,141,147) , -2px 1px 0 rgb(205,210,213) , -2px 3px 0 rgb(128,141,147) , -3px 2px 0 rgb(205,210,213) , -3px 4px 0 rgb(128,141,147) , -4px 3px 0 rgb(205,210,213) , -4px 5px 0 rgb(128,141,147) , -5px 4px 0 rgb(205,210,213) , -5px 6px 0 rgb(128,141,147) , -6px 5px 0 rgb(205,210,213) , -6px 7px 0 rgb(128,141,147) , -7px 6px 0 rgb(205,210,213) , -7px 8px 0 rgb(128,141,147) , -8px 7px 0 rgb(205,210,213) ;
+        -webkit-transition: none;
+        -moz-transition: none;
+        -o-transition: none;
+        transition: none;
+        -webkit-transform: none;
+        transform: none;
+        -webkit-transform-origin: 50% 50% 0;
+        transform-origin: 50% 50% 0;
+      }
+      #splend_setup_plist_item {
+        width: auto;
+        padding: 5px 15px;
+        border-radius: 8px;
+      }
+      #onOff {
+        margin: 5px;
+      }
+      #paper_toggle_button {
+        margin: 5px;
+      }
+      #pn_inputbox {
+        width: auto;
+        height: auto;
+        background-color: rgb(255, 255, 255);
+        border-radius: 8px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.098), 0px 0px 3px rgba(0, 0, 0, 0.098);
+        padding: 2px 10px;
+        margin: 10px;
+      }
+      #init_btn {
+        background-color: rgb(139, 195, 74);
+      }
+      #list {
+        width: auto;
+        min-height: 316px;
+        padding: 5px 10px;
+      }
+      #new_p_input {
+        width: auto;
+      }
+    </style>
+    <core-card id="core_card" layout vertical center-justified>
+      <h1 id="setup_title" flex>New Game</h1>
+      <div id="list">
+        <template repeat="{{player in players}}">
+          <splend-setup-plist-item id="splend_setup_plist_item" pid="{{player.pid}}" name="{{player.name}}" on-removeme="{{removeItem}}"></splend-setup-plist-item>
+        </template>
+      </div>
+      <core-card id="pn_inputbox" vertical layout>
+          <paper-input label="Input New Player's Name" floatinglabel committedValue="{{nplayer}}" id="new_p_input"></paper-input>
+      </core-card>
+      <div id="onOff" center layout horizontal>
+        <h5>Local</h5>
+        <paper-toggle-button id="paper_toggle_button"></paper-toggle-button>
+        <h5>Online</h5>
+        <span flex></span>
+        <paper-fab icon="check" mini id="init_btn" on-tap="{{ initGame }}"></paper-fab>
+      </div>
+    </core-card>
+  </template>
+
+  <script>
+    Polymer({
+      players: [],
+      nplayer: '',
+      maxPlayers: 4,
+      online: false,  
+      nplayerChanged: function() {
+        if(this.$.new_p_input.committedValue == "") {
+          this.fire('splend-message', { message: "Invalid Name Entry" });
+          console.log("Invalid Name Entry");
+          return;
+        };
+        for(i=0;i < this.players.length;i++){
+          if(this.players[i].name == this.$.new_p_input.committedValue) {
+            this.fire('splend-message', { message: "Previously entered name" });
+            console.log("Error: Previously entered name");
+            return;
+          };
+        };
+        if(this.players.length >= this.maxPlayers ) {
+          this.fire('splend-message', { message: "Max Players reached" });
+          console.log("Error: Max Players reached")
+          return;
+        };
+        var newPlayer = { pid: this.players.length, name: this.$.new_p_input.value };
+        this.players.push(newPlayer);
+        this.$.new_p_input.value = "";
+      },
+      
+      removeItem: function(e) {
+        if (e.detail.pid > -1) {
+          this.players.splice(e.detail.pid, 1);
+				}
+        for(i=0;i < this.players.length;i++){
+          this.players[i].pid = i;
+        };
+      },
+      
+      initGame: function() {
+        if(this.players.length < 1) {
+          this.fire('splend-message', { message: "Not enough players" });
+          console.log("Error: Not enough players");
+          return;
+        };
+        this.fire('initgame',{players: this.players, online: this.online});
+      },
+    });
+
+  </script>
+
+</polymer-element>

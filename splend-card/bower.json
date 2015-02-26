@@ -1,0 +1,10 @@
+{
+  "name": "splend-card",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer#master",
+    "polymer": "Polymer/core-icon-button#master",
+    "polymer": "Polymer/paper-shadow#master",
+    "polymer": "Polymer/paper-ripple#master",
+  }
+}

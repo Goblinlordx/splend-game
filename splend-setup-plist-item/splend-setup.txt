@@ -1,0 +1,107 @@
+<link href="../splend-setup-plist-item/splend-setup-plist-item.html" rel="import">
+<link href="../paper-input/paper-input.html" rel="import">
+<link href="../paper-toggle-button/paper-toggle-button.html" rel="import">
+<link href="../core-icons/core-icons.html" rel="import">
+<link href="../core-icons/av-icons.html" rel="import">
+<link href="../paper-fab/paper-fab.html" rel="import">
+
+<polymer-element name="splend-setup">
+
+  <template>
+    <style>    
+      #core_card {
+        position: absolute;
+        min-width: 300px;
+        height: auto;
+        background-color: rgb(255, 255, 255);
+        border-radius: 2px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.098), 0px 0px 3px rgba(0, 0, 0, 0.098);
+      }
+      #splend_setup_plist_item {
+        margin: 5px;
+      }
+      #onOff {
+        margin: 5px;
+      }
+      #paper_toggle_button {
+        margin: 5px;
+      }
+      #pn_inputbox {
+        width: auto;
+        height: auto;
+        background-color: rgb(255, 255, 255);
+        border-radius: 2px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.098), 0px 0px 3px rgba(0, 0, 0, 0.098);
+        padding: 2px 10px;
+        margin: 10px;
+      }
+      #init_btn {
+        background-color: rgb(139, 195, 74);
+      }
+    </style>
+    <core-card id="core_card" layout vertical>
+      <div layout center center-justified><h1>New Game</h1></div>
+      <template repeat="{{player in players}}">
+        <splend-setup-plist-item id="splend_setup_plist_item" pid="{{player.pid}}" name="{{player.name}}" on-removeme="{{removeItem}}"></splend-setup-plist-item>
+      </template>
+      <core-card id="pn_inputbox" vertical layout>
+        <paper-input label="Input New Player's Name" floatinglabel committedValue="{{nplayer}}" id="new_p_input"></paper-input>
+      </core-card>
+      <div id="onOff" center layout horizontal>
+        <h5>Offline</h5>
+        <paper-toggle-button id="paper_toggle_button"></paper-toggle-button>
+        <h5>Online</h5>
+        <span flex></span>
+        <paper-fab icon="check" mini id="init_btn" on-tap="{{initGame}}"></paper-fab>
+      </div>
+    </core-card>
+  </template>
+
+  <script>
+
+    Polymer({
+      players: [],
+      nplayer: '',
+      maxPlayers: 4,
+      offline: false,
+      nplayerChanged: function() {
+        if(this.$.new_p_input.committedValue == "") {
+          console.log("Invalid Name Entry");
+          return;
+        };
+        for(i=0;i < this.players.length;i++){
+          if(this.players[i].name == this.$.new_p_input.committedValue) {
+            console.log("Error: Previously entered name");
+            return;
+          };
+        };
+        if(this.players.length >= this.maxPlayers ) {
+          console.log("Error: Max Players reached")
+          return;
+        };
+        var newPlayer = { pid: this.players.length, name: this.$.new_p_input.value };
+        this.players.push(newPlayer);
+      },
+      
+      removeItem: function(e) {
+        if (e.detail.pid > -1) {
+    			this.players.splice(e.detail.pid, 1);
+				}
+        for(i=0;i < this.players.length;i++){
+          this.players[i].pid = i;
+        };
+      },
+      
+      initGame: function() {
+        if(this.players.length < 1) {
+          console.log("Error: Not enough players");
+          return;
+        };
+        console.log("Firing initgame, details:" + JSON.stringify({players: this.players, offline: this.offline}));
+        this.fire('initgame',{players: this.players, offline: this.offline});
+      },
+    });
+
+  </script>
+
+</polymer-element>

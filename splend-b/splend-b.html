@@ -1,0 +1,132 @@
+<link rel="import" href="../../polymer/polymer.html">
+<link href="../../core-card/core-card.html" rel="import">
+<link href="../splend-card/splend-card.html" rel="import">
+
+<polymer-element name="splend-b" attributes="boardState">
+
+  <template>
+    <style>    
+      #design_host {
+        display: block;
+        width: 300px;
+        height: 200px;
+        box-sizing: border-box;
+      }
+      #splend_board {
+        width: auto;
+        height: auto;
+        background-color: rgb(255, 255, 255);
+      }
+      #splend_card {
+        margin: 5px;
+      }
+    </style>
+    <core-card id="splend_board" layout vertical center center-justified>
+      <div id="div" layout horizontal>
+        <template repeat="{{card in boardState}}">
+          <template if="{{card.tier == 5}}">
+        		<splend-card cid="{{card.cid}}" tier="{{card.tier}}" supply="{{card.supply}}" id="splend_card"></splend-card>
+          </template>
+          <template if="{{card.tier == 1}}">
+        		<splend-card cid="{{card.cid}}" tier="{{card.tier}}" white="{{card.white}}" blue="{{card.blue}}" green="{{card.green}}" red="{{card.red}}" black="{{card.black}}" vp="{{card.vp}}" supply="{{card.supply}}" id="splend_card"></splend-card>
+          </template>
+        </template>
+      </div>
+      <div id="div" layout horizontal>
+        <template repeat="{{card in boardState}}">
+          <template if="{{card.tier == 6}}">
+        		<splend-card cid="{{card.cid}}" tier="{{card.tier}}" supply="{{card.supply}}" id="splend_card"></splend-card>
+          </template>
+          <template if="{{card.tier == 2}}">
+        		<splend-card cid="{{card.cid}}" tier="{{card.tier}}" white="{{card.white}}" blue="{{card.blue}}" green="{{card.green}}" red="{{card.red}}" black="{{card.black}}" vp="{{card.vp}}" supply="{{card.supply}}" id="splend_card"></splend-card>
+          </template>
+        </template>
+      </div>
+      <div id="div" layout horizontal>
+        <template repeat="{{card in boardState}}">
+          <template if="{{card.tier == 7}}">
+        		<splend-card cid="{{card.cid}}" tier="{{card.tier}}" supply="{{card.supply}}" id="splend_card"></splend-card>
+          </template>
+          <template if="{{card.tier == 3}}">
+        		<splend-card cid="{{card.cid}}" tier="{{card.tier}}" white="{{card.white}}" blue="{{card.blue}}" green="{{card.green}}" red="{{card.red}}" black="{{card.black}}" vp="{{card.vp}}" supply="{{card.supply}}" id="splend_card"></splend-card>
+          </template>
+        </template>
+      </div>
+      <div id="div" layout horizontal>
+        <template repeat="{{card in boardState}}">
+          <template if="{{card.tier == 4}}">
+            <splend-card cid="{{card.cid}}" tier="{{card.tier}}" white="{{card.white}}" blue="{{card.blue}}" green="{{card.green}}" red="{{card.red}}" black="{{card.black}}" vp="{{card.vp}}" supply="{{card.supply}}" id="splend_card"></splend-card>
+          </template>
+        </template>
+      </div>
+    </core-card>
+  </template>
+
+  <script>
+
+    Polymer({
+      boardState: [{
+    		      "tier":5,
+      				"white":1,
+      				"blue":2,
+     					"green":1,
+      				"red":5,
+      				"black":4,
+      				"vp":1,
+      				"supply":40,
+      				"tier_text": '',
+      				"deck_count": '',
+    },{
+    		      "tier":1,
+      				"white":1,
+      				"blue":2,
+     					"green":1,
+      				"red":5,
+      				"black":4,
+      				"vp":1,
+      				"supply":1,
+      				"tier_text": '',
+      				"deck_count": '',
+    },{
+    		      "tier":1,
+      				"white":1,
+      				"blue":2,
+     					"green":1,
+      				"red":5,
+      				"black":4,
+      				"vp":1,
+      				"supply":5,
+      				"tier_text": '',
+      				"deck_count": '',
+    },{
+    		      "tier":1,
+      				"white":1,
+      				"blue":2,
+     					"green":0,
+      				"red":5,
+      				"black":4,
+      				"vp":0,
+      				"supply":3,
+      				"tier_text": '',
+      				"deck_count": '',
+    },{
+    		      "tier":1,
+      				"white":1,
+      				"blue":2,
+                                "green":1,
+      				"red":5,
+      				"black":4,
+      				"vp":1,
+      				"supply":4,
+      				"tier_text": '',
+      				"deck_count": '',
+    },],
+                   
+                   
+      
+      
+    });
+
+  </script>
+
+</polymer-element>

@@ -1,0 +1,11 @@
+{
+  "name": "splend-setup-plist-item",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer#master",
+    "polymer": "Polymer/core-icons#master",
+    "polymer": "Polymer/paper-fab#master",
+    "polymer": "Polymer/paper-icon-button#master",
+    "polymer": "Polymer/paper-ripple#master",
+  }
+}

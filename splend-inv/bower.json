@@ -1,0 +1,11 @@
+{
+  "name": "splend-inv",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer#master",
+    "polymer": "Polymer/core-icons#master",
+    "polymer": "Polymer/core-icon-button#master",
+    "polymer": "Polymer/paper-icon-button#master",
+    "polymer": "https://github.com/Goblinlordx/splend-card.git",
+  }
+}

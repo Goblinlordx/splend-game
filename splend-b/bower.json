@@ -1,0 +1,9 @@
+{
+  "name": "splend-b",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer#master",
+    "polymer": "Polymer/core-card#master",
+    "polymer": "https://github.com/Goblinlordx/splend-card.git",
+  }
+}

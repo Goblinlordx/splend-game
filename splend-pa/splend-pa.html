@@ -1,0 +1,102 @@
+<link rel="import" href="../../polymer/polymer.html">
+<link href="../../core-card/core-card.html" rel="import">
+<link href="../splend-p/splend-p.html" rel="import">
+
+<polymer-element name="splend-pa" attributes="players activepid">
+
+  <template>
+    <style>    
+      :host {
+	display: block;
+        width: auto;
+        height: auto;
+        box-sizing: border-box;
+      }
+      #splend_pa {
+        width: auto;
+        height: auto;
+        background-color: rgb(255, 255, 255);
+        padding: 8px;
+      }
+    </style>
+    <core-card id="splend_pa" center layout horizontal around-justified>
+      <template repeat="{{player in players}}">
+        <splend-p id="splend_p" activeplayer?="{{ player.pid == activepid }}" pid="{{player.pid}}" name="{{player.name}}" vp="{{player.vp}}" white="{{player.white}}" white_p="{{player.white_p}}" blue="{{player.blue}}" blue_p="{{player.blue_p}}" green="{{player.green}}" green_p="{{player.green_p}}" red="{{player.red}}" red_p="{{player.red_p}}" black="{{player.black}}" black_p="{{player.black_p}}" res="{{player.res}}" inventory="{{player.inventory}}"></splend-p>
+      </template>
+    </core-card>
+  </template>
+
+  <script>
+
+    Polymer({
+      activepid: 0,
+      players: [{
+      "pid": 0,
+      "name": 'Testing long',
+      "vp": 5,
+      "white": 1,
+      "white_p": 4,
+      "blue":7,
+      "blue_p":5,
+      "green":7,
+      "green_p":7,
+      "red":2,
+      "red_p":11,
+      "black":12,
+      "black_p":1,
+      "res":1,
+      "inventory":[]
+      },{
+      "pid": 0,
+      "name": 'Testing very long P2',
+      "vp": 5,
+      "white": 1,
+      "white_p": 4,
+      "blue":7,
+      "blue_p":5,
+      "green":7,
+      "green_p":7,
+      "red":2,
+      "red_p":11,
+      "black":12,
+      "black_p":1,
+      "res":1,
+      "inventory":[]
+      },{
+      "pid": 0,
+      "name": 'Test P3',
+      "vp": 5,
+      "white": 1,
+      "white_p": 4,
+      "blue":7,
+      "blue_p":5,
+      "green":7,
+      "green_p":7,
+      "red":2,
+      "red_p":11,
+      "black":12,
+      "black_p":1,
+      "res":1,
+      "inventory":[]
+      },{
+      "pid": 0,
+      "name": 'Test P4',
+      "vp": 5,
+      "white": 1,
+      "white_p": 4,
+      "blue":7,
+      "blue_p":5,
+      "green":7,
+      "green_p":7,
+      "red":2,
+      "red_p":11,
+      "black":12,
+      "black_p":1,
+      "res":1,
+      "inventory":[]
+      }],
+    });
+
+  </script>
+
+</polymer-element>

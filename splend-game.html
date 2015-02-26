@@ -1,0 +1,819 @@
+<link href="../splend-game/splend-b/splend-b.html" rel="import">
+<link href="../splend-game/splend-pa/splend-pa.html" rel="import">
+<link href="../splend-game/splend-inv/splend-inv.html" rel="import">
+<link href="../splend-game/splend-bbar/splend-bbar.html" rel="import">
+<link href="../splend-game/splend-deck/splend-deck.html" rel="import">
+<link href="../splend-game/splend-setup/splend-setup.html" rel="import">
+<link href="../splend-game/splend-coinbar/splend-coinbar.html" rel="import">
+<link href="../core-overlay/core-overlay.html" rel="import">
+<link href="../paper-toast/paper-toast.html" rel="import">
+
+<polymer-element name="splend-game">
+
+  <template>
+    <style>    
+      #design_host {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+      }
+      #splend_setup {
+        top: 0px;
+        left: 0px;
+        position: relative;
+        display: block;
+      }
+      #splend_inv {
+        top: 0px;
+        left: 0px;
+        position: relative;
+        display: block;
+      }
+      #game_frame {
+        max-width: 841px;
+      }
+      #paper_toast {
+        top: 490px;
+        bottom: auto;
+      }
+      #top_bar {
+        /*
+        height: 50px;
+        width: 100%;
+        */
+      }
+      #splend_bbar {
+        position: relative;
+      }
+      #setup_overlay {
+        height: auto;
+        width: auto;
+      }
+      #dialog {
+        background: white;
+      }
+      .hidden {
+        position: absolute;
+      }
+    </style>
+    <div fullbleed layout horizontal center center-justified>
+      <core-overlay id="game_overlay" fullbleed backdrop="true" layout horizontal center center-justified>
+        <splend-setup id="splend_setup" hidden?="{{ hideSetup }}"></splend-setup>
+        <splend-inv id="splend_inv" hidden?="{{ hideInv }}"></splend-inv>
+      </core-overlay>
+      <div layout center center-justified>
+        <div id="top_bar"></div>
+        <paper-toast id="paper_toast" class="core-transition-bottom core-transition" touch-action="none"></paper-toast>
+        <div id="game_frame" layout horizontal center center-justified>
+          <splend-coinbar id="splend_coinbar" hidden?="{{hideGame}}" coinState="{{coinState}}" supply="{{coinSupply}}"></splend-coinbar>
+          <splend-b id="splend_b" boardState="{{activeBoard}}" hidden?="{{hideGame}}"></splend-b>
+        </div>
+        <splend-bbar id="splend_bbar" hidden?="{{hideGame}}"></splend-bbar>
+        <splend-pa id="splend_pa" activepid="{{activepid}}" players="{{players}}" hidden?="{{hideGame}}"></splend-pa>
+        <splend-deck id="splend_deck"></splend-deck>
+      </div>
+    </div>
+  </template>
+
+  <script>
+
+    Polymer({
+      deck: [],
+      hCount: 0,
+      coinState: [
+        false,
+        false,
+        false,
+        false,
+        false
+        ],
+      coinSupply: [0,0,0,0,0,0],
+      activeBoard: [{
+            "cid": 0,
+            "tier": 5,
+            "white": 0,
+            "blue": 0,
+            "green": 0,
+            "red": 0,
+            "black": 0,
+            "vp": 0,
+            "supply": 0
+          },{
+            "cid": 1,
+            "tier": 6,
+            "white": 0,
+            "blue": 0,
+            "green": 0,
+            "red": 0,
+            "black": 0,
+            "vp": 0,
+            "supply": 0
+          },{
+            "cid": 2,
+            "tier": 7,
+            "white": 0,
+            "blue": 0,
+            "green": 0,
+            "red": 0,
+            "black": 0,
+            "vp": 0,
+            "supply": 0
+          },{
+            "cid": 3,
+            "tier": 8,
+            "white": 0,
+            "blue": 0,
+            "green": 0,
+            "red": 0,
+            "black": 0,
+            "vp": 0,
+            "supply": 0
+          }],
+      online: true,
+      hideGame: true,
+      hideSetup: false,
+      hideInv: true,
+      activepid: 0,
+      noteQueue: [],
+      turnState: 0,
+      maxCoin: 10,
+      topTCards: 0,
+      coinMin: 2,
+      ready: function () {
+        this.addEventListener('splend-message', this.message);
+        this.addEventListener('core-overlay-close-completed', this.queue);
+        this.addEventListener('initgame', this.initGame);
+        this.addEventListener('new-turn', this.newTurn);
+        this.addEventListener('splend-act-pcard', this.actPcard);
+        this.addEventListener('splend-act-rcard', this.actRcard);
+        this.addEventListener('splend-act-coin3', this.actCoin3);
+        this.addEventListener('splend-act-coin2', this.actCoin2);
+        this.addEventListener('splend-act-cancel', this.actCancel);
+        this.addEventListener('inv-clicked', this.invClick);
+        this.addEventListener('coin-clicked', this.coinClick);
+        this.addEventListener('card-clicked', this.cardClick);
+        
+        this.$.game_overlay.open();
+      },
+      
+      // Player Notification Messaging and Queue
+      
+      message: function (e) {
+        if(this.$.paper_toast.opened) {
+          this.noteQueue.push(e.detail.message);
+          return;
+        };
+        this.$.paper_toast.text = e.detail.message;
+        this.$.paper_toast.show();
+      },
+      queue: function (e) {
+        if(this.$.paper_toast.opened) {
+          return;
+        };
+        if(this.noteQueue.length > 0) {
+          this.$.paper_toast.text = this.noteQueue[0];
+          this.noteQueue.shift();
+          this.$.paper_toast.show();
+        };
+      },
+      
+      //  Game Initialization
+      
+      initGame: function (e) {
+        this.online = e.detail.online;
+        if(!this.online) {
+          console.log("Init Offline Mode");
+          
+          this.activeBoard = [{
+            "cid": 0,
+            "tier": 5,
+            "white": 0,
+            "blue": 0,
+            "green": 0,
+            "red": 0,
+            "black": 0,
+            "vp": 0,
+            "supply": 0
+          },{
+            "cid": 1,
+            "tier": 6,
+            "white": 0,
+            "blue": 0,
+            "green": 0,
+            "red": 0,
+            "black": 0,
+            "vp": 0,
+            "supply": 0
+          },{
+            "cid": 2,
+            "tier": 7,
+            "white": 0,
+            "blue": 0,
+            "green": 0,
+            "red": 0,
+            "black": 0,
+            "vp": 0,
+            "supply": 0
+          },{
+            "cid": 3,
+            "tier": 8,
+            "white": 0,
+            "blue": 0,
+            "green": 0,
+            "red": 0,
+            "black": 0,
+            "vp": 0,
+            "supply": 0
+          }];
+          
+          this.activepid = Math.floor((Math.random() * e.detail.players.length));
+          this.players = e.detail.players;
+          for(i=0;i<this.players.length;i++) {
+            this.players[i].vp = 0;
+            this.players[i].white = 0;
+            this.players[i].white_p = 0;
+            this.players[i].blue = 0;
+            this.players[i].blue_p = 0;
+            this.players[i].green = 0;
+            this.players[i].green_p = 0;
+            this.players[i].red = 0;
+            this.players[i].red_p = 0;
+            this.players[i].black = 0;
+            this.players[i].black_p = 0;
+            this.players[i].res = 0;
+            this.players[i].inventory = [];
+          };
+          
+          switch(this.players.length) {
+            case 1:
+              this.coinSupply = [4,4,4,4,4,5];
+              this.topTCards = 2;
+              this.coinMin = 3;
+              break;
+            case 2:
+              this.coinSupply = [4,4,4,4,4,5];
+              this.topTCards = 3;
+              this.coinMin = 3;
+              break;
+            case 3:
+              this.coinSupply = [5,5,5,5,5,5];
+              this.topTCards = 4;
+              this.coinMin = 3;
+              break;
+            case 4:
+              this.coinSupply = [7,7,7,7,7,5];
+              this.topTCards = 5;
+              this.coinMin = 3;
+              break;
+          };
+          
+          this.deck = this.$.splend_deck.deck;
+          
+          for(i=0;i<this.deck.length;i++) {
+            this.activeBoard[this.deck[i].tier - 1].supply++
+          };
+          
+          var startIdx = 0;
+          for(i=0;i<4;i++){
+            if(i<3) {
+              for(j=0;j<4;j++){
+                var cardIdx = Math.floor(Math.random() * this.activeBoard[i].supply) + startIdx;
+                this.activeBoard.push(this.deck[cardIdx]);
+                this.activeBoard[this.activeBoard.length - 1].cid = this.activeBoard.length - 1;
+                this.deck.splice(cardIdx, 1);
+                this.activeBoard[i].supply--
+              };
+            } else {
+              for(j=0;j<this.topTCards;j++) {
+                var cardIdx = Math.floor(Math.random() * this.activeBoard[i].supply) + startIdx;
+                this.activeBoard.push(this.deck[cardIdx]);
+                this.activeBoard[this.activeBoard.length - 1].cid = this.activeBoard.length - 1;
+                this.deck.splice(cardIdx, 1);
+                this.activeBoard[i].supply--
+              };
+            };
+                          
+              startIdx = startIdx + this.activeBoard[i].supply;
+          };
+          
+          
+          this.coinState = [false, false, false, false, false];
+          this.hCount = 0;
+          this.turnState = 0;
+        if(this.hideSetup = false) {
+          console.log("initGame: Hiding Setup");
+          this.hideSetup = true;
+        };
+        if(this.hideGame = true) {
+          console.log("initGame: Showing Game");
+          this.hideGame = false;
+        };
+          this.fire('new-turn');
+        };
+          this.$.game_overlay.close();
+        
+      },
+      rewardTier: function (activepid) {
+        console.log("Tier 4 Reward check");
+        reward = true;
+        bCard = [];
+        pCard = [
+          this.players[activepid].white_p,
+          this.players[activepid].blue_p,
+          this.players[activepid].green_p,
+          this.players[activepid].red_p,
+          this.players[activepid].black_p
+        ];
+        for(i=0;i<this.activeBoard.length;i++) {
+          reward = true;
+          if(this.activeBoard[i].tier == 4) {
+            bCard = [
+              this.activeBoard[i].white,
+              this.activeBoard[i].blue,
+              this.activeBoard[i].green,
+              this.activeBoard[i].red,
+              this.activeBoard[i].black
+            ];
+            
+            for(j=0;j<bCard.length;j++) {
+              if(pCard[j]<bCard[j]) {
+                reward = false;
+              };
+            };
+            if(reward == true) {
+              this.players[activepid].vp = this.players[activepid].vp + this.activeBoard[i].vp;
+              this.activeBoard.splice(i,1);
+              var msg = this.players[activepid].name + " received a tier 4 reward card.";
+              this.fire('splend-message', { message : msg });
+              return;
+            };
+            
+            
+          };
+        };
+      },
+      newTurn: function (e) {
+        if(this.players[this.activepid].white_p +
+           this.players[this.activepid].blue_p +
+           this.players[this.activepid].green_p +
+           this.players[this.activepid].red_p +
+           this.players[this.activepid].black_p > 7) {
+          
+          this.rewardTier(this.activepid);
+          
+        };
+        this.activepid = (this.activepid + 1)%this.players.length;
+        this.turnState = 0;
+        btns = [false, false, false, false, true];
+        this.$.splend_bbar.buttonStates = btns;
+        var msg = this.players[this.activepid].name + " select an action.";
+        /*
+        if(this.hideSetup = false) {
+          console.log("newTurn: Hiding Setup");
+          this.hideSetup = true;
+        };
+        if(this.hideGame = true) {
+          console.log("newTurn: Showing Game");
+          this.hideGame = false;
+        };
+        */
+        var msg = this.players[this.activepid].name + " select an action.";
+        this.$.splend_bbar.buttonStates = btns;
+        this.fire('splend-message', { message : msg });
+      },
+      
+      // Event Functions -> Set State for Action Resolution
+      
+      invClick: function (e) {
+        console.log("Saw inventory click from pid: " + e.detail.pid);
+        if(this.online) {
+          return;
+        };
+        if(e.detail.pid != this.activepid) {
+          var msg = "You may only view your own reserve.";
+          this.fire('splend-message', { message : msg });
+          return;
+        };
+        if(this.players[e.detail.pid].inventory < 1) {
+          var msg = "You do not currently have any cards reserved.";
+          this.fire('splend-message', { message : msg });
+          return;
+        };
+        
+        this.$.splend_inv.pName = this.players[e.detail.pid].name;
+        this.$.splend_inv.inventory = this.players[e.detail.pid].inventory;
+        
+        this.hideSetup = true;
+        this.hideInv = false;
+        this.$.game_overlay.open();
+        // this.fire('inv-clicked', { pid : e.detail.pid });
+        
+      },
+      actCancel: function (e) {
+        this.coinState = [false, false, false, false, false];
+        this.$.splend_bbar.buttonStates = [false, false, false, false, true];
+        this.turnState = 0;
+        var msg = this.players[this.activepid].name + " select an action.";
+        this.fire('splend-message', { message : msg });
+      },
+      actPcard: function (e) {
+        this.turnState = 1;
+        this.$.splend_bbar.buttonStates = [true, true, true, true, false];
+        var msg = this.players[this.activepid].name + " select a supply to purchase.";
+        this.fire('splend-message', { message : msg });
+      },
+      actRcard: function (e) {
+        if(this.players[this.activepid].inventory.length >= 3) {
+          var msg = this.players[this.activepid].name + " already has the max number of cards reserved.";
+          this.fire('splend-message', { message : msg });
+          return;
+        };
+        this.turnState = 2;
+        this.$.splend_bbar.buttonStates = [true, true, true, true, false];
+        var msg = this.players[this.activepid].name + " select a supply to reserve.";
+        this.fire('splend-message', { message : msg });
+      },
+      actCoin3: function (e) {
+        var supSum = 0;
+        
+        supSum = supSum + this.players[this.activepid].white;
+        supSum = supSum + this.players[this.activepid].blue;
+        supSum = supSum + this.players[this.activepid].green;
+        supSum = supSum + this.players[this.activepid].red;
+        supSum = supSum + this.players[this.activepid].black;
+        
+        if( supSum >= this.maxCoin ) {
+          var msg = this.players[this.activepid].name + " has already reached the maximum number of coins.";
+          this.fire('splend-message', { message : msg });
+          return;
+        };
+            
+        this.turnState = 3;
+        this.$.splend_bbar.buttonStates = [true, true, true, true, false];
+        var msg = this.players[this.activepid].name + " select 3 differant coins.";
+        this.fire('splend-message', { message : msg });
+      },
+      actCoin2: function (e) {
+        this.turnState = 4;
+        this.$.splend_bbar.buttonStates = [true, true, true, true, false];
+        var msg = this.players[this.activepid].name + " select a coin.";
+        this.fire('splend-message', { message : msg });
+      },
+      
+      // Action Resolution functions
+      
+      cardClick: function (e) {
+        if(this.online) {
+          return;
+        };
+        
+        // Resolve Pcard State
+        if(this.turnState == 1) {
+          var cid = e.detail.cid;
+          var cost = [];
+          var tSupply = [];
+          var resCost = 0;
+          
+          // Resolve Pcard reserve
+          
+          if(e.detail.rFlag == true) {
+            
+            cost[0] = this.players[this.activepid].inventory[cid].white - this.players[this.activepid].white_p;
+            cost[1] = this.players[this.activepid].inventory[cid].blue - this.players[this.activepid].blue_p;
+            cost[2] = this.players[this.activepid].inventory[cid].green - this.players[this.activepid].green_p;
+            cost[3] = this.players[this.activepid].inventory[cid].red - this.players[this.activepid].red_p;
+            cost[4] = this.players[this.activepid].inventory[cid].black - this.players[this.activepid].black_p;
+            tSupply[0] = this.players[this.activepid].white;
+            tSupply[1] = this.players[this.activepid].blue;
+            tSupply[2] = this.players[this.activepid].green;
+            tSupply[3] = this.players[this.activepid].red;
+            tSupply[4] = this.players[this.activepid].black;
+            for(i=0;i<cost.length;i++) {
+              if(cost[i]>0) {
+                if(cost[i]>0) {
+                  tSupply[i] = tSupply[i] - cost[i];
+                };
+              };
+            };
+            
+            for(i=0;i<tSupply.length;i++) {
+              if(tSupply[i]<0) {
+                resCost = resCost + (tSupply[i] * (-1) );
+                tSupply[i] = 0;
+              };
+            };
+            
+            if(resCost > this.players[this.activepid].res) {
+              var msg = "Insufficient supply to purchase.";
+              this.fire('splend-message', { message : msg });
+              return;
+            };
+            
+            this.players[this.activepid].res = this.players[this.activepid].res - resCost;
+            
+            this.coinSupply[0] = this.coinSupply[0] + (this.players[this.activepid].white - tSupply[0]);
+            this.coinSupply[1] = this.coinSupply[1] + (this.players[this.activepid].blue - tSupply[1]);
+            this.coinSupply[2] = this.coinSupply[2] + (this.players[this.activepid].green - tSupply[2]);
+            this.coinSupply[3] = this.coinSupply[3] + (this.players[this.activepid].red - tSupply[3]);
+            this.coinSupply[4] = this.coinSupply[4] + (this.players[this.activepid].black - tSupply[4]);
+            this.players[this.activepid].white = tSupply[0];
+            this.players[this.activepid].blue = tSupply[1];
+            this.players[this.activepid].green = tSupply[2];
+            this.players[this.activepid].red = tSupply[3];
+            this.players[this.activepid].black = tSupply[4];
+            
+            this.players[this.activepid].vp = this.players[this.activepid].vp + this.players[this.activepid].inventory[cid].vp;
+            
+            switch(this.players[this.activepid].inventory[cid].supply) {
+              case 1:
+                this.players[this.activepid].white_p = this.players[this.activepid].white_p+1;
+                break;
+              case 2:
+                this.players[this.activepid].blue_p = this.players[this.activepid].blue_p+1;
+                break;
+              case 3:
+                this.players[this.activepid].green_p = this.players[this.activepid].green_p+1;
+                break;
+              case 4:
+                this.players[this.activepid].red_p = this.players[this.activepid].red_p+1;
+                break;
+              case 5:
+                this.players[this.activepid].black_p = this.players[this.activepid].black_p+1;
+                break;
+            };
+            
+            this.players[this.activepid].inventory.splice(cid, 1);
+            
+            this.$.game_overlay.close();
+            this.hideInv = true;
+            
+            this.fire('new-turn');
+            
+            return;
+          };
+          
+          // Resolve Pcard board
+          
+          cost[0] = this.activeBoard[cid].white - this.players[this.activepid].white_p;
+          cost[1] = this.activeBoard[cid].blue - this.players[this.activepid].blue_p;
+          cost[2] = this.activeBoard[cid].green - this.players[this.activepid].green_p;
+          cost[3] = this.activeBoard[cid].red - this.players[this.activepid].red_p;
+          cost[4] = this.activeBoard[cid].black - this.players[this.activepid].black_p;
+          tSupply[0] = this.players[this.activepid].white;
+          tSupply[1] = this.players[this.activepid].blue;
+          tSupply[2] = this.players[this.activepid].green;
+          tSupply[3] = this.players[this.activepid].red;
+          tSupply[4] = this.players[this.activepid].black;
+          for(i=0;i<cost.length;i++) {
+            if(cost[i]>0) {
+              if(cost[i]>0) {
+                tSupply[i] = tSupply[i] - cost[i];
+              };
+            };
+          };
+          for(i=0;i<tSupply.length;i++) {
+            if(tSupply[i]<0) {
+              resCost = resCost + (tSupply[i] * (-1) );
+              tSupply[i] = 0;
+            };
+          };
+          
+          if(resCost > this.players[this.activepid].res) {
+            var msg = "Insufficient supply to purchase.";
+            this.fire('splend-message', { message : msg });
+            return;
+          };
+          
+          this.players[this.activepid].res = this.players[this.activepid].res - resCost;
+          
+          /*
+          if(tSupply[i]<0) {
+            var msg = "Insufficient supply to purchase.";
+            this.fire('splend-message', { message : msg });
+            return;
+          };
+          */
+          
+          this.coinSupply[0] = this.coinSupply[0] + (this.players[this.activepid].white - tSupply[0]);
+          this.coinSupply[1] = this.coinSupply[1] + (this.players[this.activepid].blue - tSupply[1]);
+          this.coinSupply[2] = this.coinSupply[2] + (this.players[this.activepid].green - tSupply[2]);
+          this.coinSupply[3] = this.coinSupply[3] + (this.players[this.activepid].red - tSupply[3]);
+          this.coinSupply[4] = this.coinSupply[4] + (this.players[this.activepid].black - tSupply[4]);
+          
+          this.players[this.activepid].white = tSupply[0];
+          this.players[this.activepid].blue = tSupply[1];
+          this.players[this.activepid].green = tSupply[2];
+          this.players[this.activepid].red = tSupply[3];
+          this.players[this.activepid].black = tSupply[4];
+          
+          var tier = this.activeBoard[cid].tier;
+          var sIndx = 0;
+          if(tier > 1) {
+            for(i=0;i < (tier - 1);i++) {
+              sIndx = sIndx + this.activeBoard[i].supply;
+            };
+          };
+          var eIndx = sIndx + this.activeBoard[tier - 1].supply
+          
+          this.players[this.activepid].vp = this.players[this.activepid].vp + this.activeBoard[cid].vp;
+          
+          switch(this.activeBoard[cid].supply) {
+            case 1:
+              this.players[this.activepid].white_p = this.players[this.activepid].white_p+1;
+              break;
+            case 2:
+              this.players[this.activepid].blue_p = this.players[this.activepid].blue_p+1;
+              break;
+            case 3:
+              this.players[this.activepid].green_p = this.players[this.activepid].green_p+1;
+              break;
+            case 4:
+              this.players[this.activepid].red_p = this.players[this.activepid].red_p+1;
+              break;
+            case 5:
+              this.players[this.activepid].black_p = this.players[this.activepid].black_p+1;
+              break;
+          };
+          
+          if(sIndx != eIndx) {
+            var cardIndx = Math.floor(Math.random() * (eIndx - sIndx)) + sIndx;
+            this.activeBoard[cid] = this.deck[cardIndx]
+            this.activeBoard[cid].cid = cid;
+            this.deck.splice(cardIndx, 1);
+            this.activeBoard[tier-1].supply--
+          };
+          this.fire('new-turn');
+        };
+        
+        // resolve Rcard state
+        
+        if(this.turnState == 2) {
+          var cid = e.detail.cid;
+          var tier = this.activeBoard[cid].tier;
+          
+          if(e.detail.pinv == true) {
+            var msg = "Cards can not be reserved from your reserve.";
+            this.fire('splend-message', { message : msg });
+            return;
+          };
+          if(tier>3){
+            var msg = "Only cards of tier 1-3 can be reserved.";
+            this.fire('splend-message', { message : msg });
+            return;
+          };
+          
+          var sIndx = 0;
+          if(tier > 1) {
+            for(i=0;i < (tier - 1);i++) {
+              sIndx = sIndx + this.activeBoard[i].supply;
+            };
+          };
+          var eIndx = sIndx + this.activeBoard[tier-1].supply;
+          
+          if(this.coinSupply[5]>0) {
+            this.players[this.activepid].res++;
+            this.coinSupply[5]--;
+          };
+          
+          this.players[this.activepid].inventory.push(this.activeBoard[cid]);
+          this.players[this.activepid].inventory[this.players[this.activepid].inventory.length - 1].cid = this.players[this.activepid].inventory.length - 1;
+          console.log(this.players[this.activepid].inventory);
+          if(sIndx != eIndx) {
+            var cardIndx = Math.floor(Math.random() * (eIndx - sIndx)) + sIndx;
+            this.activeBoard[cid] = this.deck[cardIndx];
+            this.activeBoard[cid].cid = cid;
+            this.deck.splice(cardIndx, 1);
+            this.activeBoard[tier-1].supply--
+          };
+          this.fire('new-turn');
+          
+        };
+        
+      },
+      
+      coinClick: function (e) {
+        if(this.online){
+          return;
+        };          
+        var success = false;
+        
+        // Resolve Coin3 State
+        
+        if(this.turnState == 3) {
+          var type = e.detail.type - 1;
+          if(type >= 5) {
+            return;
+          };
+          if(this.coinSupply[type] > 0) {
+            if(!this.coinState[type]) {
+              this.hCount++;
+            }else{
+              this.hCount--;
+            };
+            this.coinState[type] = !this.coinState[type];
+            success = true;
+          };
+          if(this.hCount == 3) {
+            for(i=0;i<this.coinState.length;i++) {
+              if(this.coinState[i]) {
+                this.coinSupply[i]--;
+                switch(i) {
+                  case 0:
+                    this.players[this.activepid].white++;
+                    break;
+                  case 1:
+                    this.players[this.activepid].blue++;
+                    break;
+                  case 2:
+                    this.players[this.activepid].green++;
+                    break;
+                  case 3:
+                    this.players[this.activepid].red++;
+                    break;
+                  case 4:
+                    this.players[this.activepid].black++;
+                    break;
+                };
+              };
+            };
+            this.hCount = 0;
+            this.coinState = [false, false, false, false, false];
+            this.fire('new-turn');
+            return;
+          };
+          
+          if(!success) {
+            var msg = "Unable to pickup coin.";
+            this.fire('splend-message', { message : msg });
+            return;
+          };
+          return;
+        };
+          
+        // Resolve Coin2 State
+        
+        if(this.turnState == 4) {
+          switch(e.detail.type) {
+            case 1:
+              if(this.coinSupply[0] > this.coinMin) {
+                this.players[this.activepid].white++;
+                this.players[this.activepid].white++;
+                this.coinSupply[0]--
+                this.coinSupply[0]--
+                success = true;
+              }
+              break;
+            case 2:
+              if(this.coinSupply[1] > this.coinMin) {
+                this.players[this.activepid].blue++;
+                this.players[this.activepid].blue++;
+                this.coinSupply[1]--;
+                this.coinSupply[1]--;
+                success = true;
+              }
+              break;
+            case 3:
+              if(this.coinSupply[2] > this.coinMin) {
+                this.players[this.activepid].green++;
+                this.players[this.activepid].green++;
+                this.coinSupply[2]--;
+                this.coinSupply[2]--;
+                success = true;
+              }
+              break;
+            case 4:
+              if(this.coinSupply[3] > this.coinMin) {
+                this.players[this.activepid].red++;
+                this.players[this.activepid].red++;
+                this.coinSupply[3]--;
+                this.coinSupply[3]--;
+                success = true;
+              }
+              break;
+            case 5:
+              if(this.coinSupply[4] > this.coinMin) {
+                this.players[this.activepid].black++;
+                this.players[this.activepid].black++;
+                this.coinSupply[4]--;
+                this.coinSupply[4]--;
+                success = true;
+              }
+              break;
+            case 6:
+              break;
+          };
+          if(success == false) {
+            var msg = "Unable to pickup coin.";
+            this.fire('splend-message', { message : msg });
+            return;
+          };
+          this.fire('new-turn');
+        };
+      },
+      
+    });
+
+  </script>
+
+</polymer-element>

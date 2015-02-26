@@ -1,0 +1,47 @@
+<link href="../core-icons/core-icons.html" rel="import">
+<link href="../core-icons/av-icons.html" rel="import">
+<link href="../paper-fab/paper-fab.html" rel="import">
+
+<polymer-element attributes="pid name" name="plist-item">
+
+  <template>
+    <style>    
+      #design_host {
+        width: auto;
+        height: auto;
+        box-sizing: border-box;
+        display: block;
+      }
+      #p_list_item {
+        width: auto;
+        height: auto;
+        min-width: 100px;
+        background-color: rgb(255, 255, 255);
+        border-radius: 2px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.098), 0px 0px 3px rgba(0, 0, 0, 0.098);
+        padding-left: 10px;
+      }
+      #p_list_text {
+        margin: 0px 10px;
+      }
+    </style>
+    <core-card id="p_list_item" around-justified center horizontal layout>
+      <paper-fab icon="close" mini id="paper_fab"></paper-fab>
+      <span flex></span>
+      <div id="p_list_text">
+        <h1>{{ name }}</h1>
+      </div>
+      <span flex></span>
+    </core-card>
+  </template>
+
+  <script>
+
+    Polymer({
+      pid: 0,
+      name: 'Test Player Name'
+    });
+
+  </script>
+
+</polymer-element>

@@ -1,0 +1,8 @@
+{
+  "name": "splend-bbar",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer#master",
+    "polymer": "Polymer/paper-button#master",
+  }
+}
