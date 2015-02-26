@@ -3,17 +3,17 @@
   "private": true,
   "dependencies": {
     "polymer": "Polymer/polymer#master",
-    "polymer": "Polymer/core-card#master",
-    "polymer": "Polymer/core-component-page#master",
-    "polymer": "Polymer/core-icons#master",
-    "polymer": "Polymer/core-icon-button#master",
-    "polymer": "Polymer/core-overlay#master",
-    "polymer": "Polymer/paper-button#master",
-    "polymer": "Polymer/paper-fab#master",
-    "polymer": "Polymer/paper-icon-button#master",
-    "polymer": "Polymer/paper-ripple#master",
-    "polymer": "Polymer/paper-shadow#master",
-    "polymer": "Polymer/paper-toast#master",
-    "polymer": "Polymer/paper-toggle-button#master"
+    "core-card": "Polymer/core-card#master",
+    "core-component-page": "Polymer/core-component-page#master",
+    "core-icons": "Polymer/core-icons#master",
+    "core-icon-button": "Polymer/core-icon-button#master",
+    "core-overlay": "Polymer/core-overlay#master",
+    "paper-button": "Polymer/paper-button#master",
+    "paper-fab": "Polymer/paper-fab#master",
+    "paper-icon-button": "Polymer/paper-icon-button#master",
+    "paper-ripple": "Polymer/paper-ripple#master",
+    "paper-shadow": "Polymer/paper-shadow#master",
+    "paper-toast": "Polymer/paper-toast#master",
+    "paper-toggle-button": "Polymer/paper-toggle-button#master"
   }
 }
