@@ -94,7 +94,9 @@
       }
     </style>
     <core-card id="core_card" layout vertical center-justified>
-      <h1 id="setup_title" flex>New Game</h1>
+      <div>
+      	<h1 id="setup_title" flex>New Game</h1>
+      </div>
       <div id="list">
         <template repeat="{{player in players}}">
           <splend-setup-plist-item id="splend_setup_plist_item" pid="{{player.pid}}" name="{{player.name}}" on-removeme="{{removeItem}}"></splend-setup-plist-item>
