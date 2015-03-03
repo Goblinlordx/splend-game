@@ -1,0 +1,257 @@
+<link href="../core-drawer-panel/core-drawer-panel.html" rel="import">
+<link href="../paper-tabs/paper-tabs.html" rel="import">
+<link href="../paper-tabs/paper-tab.html" rel="import">
+<link href="../core-icon-button/core-icon-button.html" rel="import">
+<link href="../core-icons/social-icons.html" rel="import">
+<link href="../core-toolbar/core-toolbar.html" rel="import">
+<link href="../core-header-panel/core-header-panel.html" rel="import">
+<link href="../core-animated-pages/core-animated-pages.html" rel="import">
+<link href="../core-animated-pages/transitions/hero-transition.html" rel="import">
+<link href="../core-animated-pages/transitions/cross-fade.html" rel="import">
+<link href="../core-animated-pages/transitions/slide-down.html" rel="import">
+<link href="../core-animated-pages/transitions/slide-up.html" rel="import">
+<link href="../core-animated-pages/transitions/slide-from-left.html" rel="import">
+<link href="../core-animated-pages/transitions/tile-cascade.html" rel="import">
+<link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+
+<polymer-element name="site-shell">
+
+  <template>
+    <style>
+      body { 
+        font-family: 'Roboto Condensed';
+      }
+      #title {
+        font-size: 30px;
+        font-family: 'Lobster';
+      }
+      #core_header_panel {
+        width: 100%;
+        height: 100%;
+        left: 0px;
+        top: 0px;
+        background-color: #000678;
+        position: relative;
+      }
+      #core_toolbar {
+        background-color: rgb(79, 125, 201);
+        color: rgb(255, 255, 255);
+      }
+      #section {
+        height: 100%;
+        background: linear-gradient(rgb(214, 227, 231), lightblue) repeat scroll 0% 0% transparent;
+        width: 100%;
+        position: relative;
+      }
+      #core_animated_pages {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        left: 0px;
+        top: 0px;
+        position: relative;
+      }
+      .mainh {
+        background-color: #C5CAE9;
+        font-family: 'Roboto Condensed';
+      }
+      .side {
+        background-color: rgb(255, 255, 255);
+        font-family: 'Roboto Condensed';
+      }
+      .mainc {
+        background-color: rgb(220, 220, 220);
+        font-family: 'Roboto Condensed';
+      }
+      #main_header_bar {
+        height: 64px;
+        background-color: rgb(79, 125, 201);
+      }
+      #core_card {
+        width: 300px;
+        height: 300px;
+        background-color: rgb(255, 255, 255);
+        border-radius: 2px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.098), 0px 0px 3px rgba(0, 0, 0, 0.098);
+        position: relative;
+      }
+      #side_card {
+        width: 100%;
+        height: 100%;
+        background-color: rgb(255, 255, 255);
+        border-radius: 2px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.098), 0px 0px 3px rgba(0, 0, 0, 0.098);
+        position: relative;
+      }
+      #game_container {
+        position: relative;
+        width: auto;
+        height: auto;
+        background-color: rgb(255, 255, 255);
+        border-radius: 2px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.098), 0px 0px 3px rgba(0, 0, 0, 0.098);
+      }
+      #site_container {
+        position: relative;
+        top: 5px;
+        width: 98%;
+        height: auto;
+        background-color: rgb(255, 255, 255);
+        border-radius: 2px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.098), 0px 0px 3px rgba(0, 0, 0, 0.098);
+      }
+      #core_drawer_panel {
+        right: 0px;
+        bottom: 0px;
+      }
+      #drawer_sect {
+        background-color: rgb(255, 255, 255);
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.098), 0px 0px 3px rgba(0, 0, 0, 0.098);
+      }
+      #section3 {
+        height: 100%;
+        width: 100%;
+        box-sizing: border-box;
+        background-color: rgb(221, 221, 221);
+      }
+      #drawer_tabs_sect {
+        width: 100%;
+        height: 100%;
+        left: 0px;
+        top: 0px;
+        position: absolute;
+      }
+      #paper_tabs {
+        height: 32px;
+        width: 100%;
+        background-color: rgb(79, 125, 201);
+        color: rgb(255, 255, 255);
+        font-family: 'Roboto Condensed';
+      }
+      paper-tabs /deep/ #selectionBar {
+        background-color:  #C5CAE9;
+      }
+      #tab_container {
+        height: 32px;
+      }
+      #side_title {
+        height: 32px;
+        width: 100%;
+        background-color: #C5CAE9;
+        color: black;
+      }
+    </style>
+    <core-drawer-panel transition id="core_drawer_panel" forceNarrow="true" touch-action fullbleed>
+      <section id="drawer_sect" drawer>
+        <section id="drawer_tabs_sect" vertical layout>
+          <div id="tab_container">
+           <paper-tabs selected="0" selectedindex="0" id="paper_tabs" layout center horizontal>
+             <paper-tab id="paper_tab" layout horizontal center-center inline active>Games</paper-tab>
+             <paper-tab id="paper_tab1" layout horizontal center-center inline>Chat</paper-tab>
+           </paper-tabs>
+          </div>
+          <core-animated-pages class="side" lastselected="1" selectedindex="0" transitions="cross-fade" selected="{{ $.paper_tabs.selected }}" notap id="core_animated_pages">
+            <section id="chat_sect" center-justified center vertical layout>
+              <core-card id="side_card" cross-fade layout vertical>
+                <div id="side_title" layout center center-justified>
+                  No Game Selected
+                </div>
+                <div>Local Games</div>
+                <div>Online Games</div>
+              </core-card>
+            </section>
+            <section id="games_sect" center-justified center vertical layout>
+              <core-card id="side_card" cross-fade layout vertical>
+                <div id="side_title" layout center center-justified>
+                  <p flex layout center center-justified>
+                    No Chat Selected
+                  </p>
+                </div>
+                Login for access to chat
+              </core-card>
+            </section>
+          </core-animated-pages>
+        </section>
+      </section>
+      <section id="section3" main>
+        <core-header-panel mode="standard" id="core_header_panel">
+          <core-toolbar id="core_toolbar">
+            <core-animated-pages transitions="hero-transition cross-fade slide-down" selected="{{ mainHeaderSelection }}" lastselected="0" selectedindex="1" notap id="core_animated_pages" class="mainh">
+              <section id="section1">
+                <core-card id="main_header_bar" flex center-justified center horizontal layout>
+                  <core-icon-button icon="menu" id="core_icon_button" on-tap="{{ panelSwitch }}"></core-icon-button>
+                  <div id="title" flex>SplendArena</div>
+                  <core-icon-button icon="settings-power" id="core_icon_button" on-tap="{{ cycleMainHeader }}" hero-id="hero" hero>Login</core-icon-button>
+                </core-card>
+              </section>
+              <section id="section1" center-justified center horizontal layout>
+                <core-card id="main_header_bar" flex center-justified center horizontal layout>
+                  <core-icon-button icon="menu" id="core_icon_button" on-tap="{{ panelSwitch }}"></core-icon-button>
+                  <div id="title" flex>SplendArena</div>
+                  <core-icon-button icon="social:person" id="core_icon_button" on-tap="{{ panelSwitch }}" slide-down>Test User</core-icon-button>
+                  <core-icon-button icon="settings-power" id="core_icon_button" on-tap="{{ cycleMainHeader }}" hero-id="hero" hero>Logout</core-icon-button>
+                </core-card>
+              </section>
+            </core-animated-pages>
+          </core-toolbar>
+          <section id="section">
+            <core-animated-pages transitions="hero-transition cross-fade" selected="1" lastselected="0" selectedindex="1" notap id="core_animated_pages" class="mainc">
+              <section id="section1" center-justified center vertical layout>
+                <core-card id="site_container" on-tap="{{ cycle }}" flex vertical layout hero hero-id="hero-card">
+                  Test Content
+                </core-card>
+              </section>
+              <section id="section1" active vertical layout center-justified center>
+                <core-card id="game_container" vertical layout cross-fade>
+                  <div center-justified center flex vertical layout>
+                    Test content
+                  </div>
+                  <div horizontal layout>
+                    Game log and buttons
+                  </div>
+                </core-card>
+                <core-card id="site_container" on-tap="{{ cycle }}" flex vertical layout hero hero-id="hero-card">
+                  Click to cycle
+                </core-card>
+              </section>
+            </core-animated-pages>
+          </section>
+        </core-header-panel>
+      </section>
+    </core-drawer-panel>
+    <core-card id="login_card">
+      Test
+    </core-card>
+  </template>
+
+  <script>
+
+    Polymer({
+      mainHeaderSelection: 0,
+      cycle: function (e) {
+        this.$.core_animated_pages.selected ^= 1;
+      },
+      cycleMainHeader: function (e) {
+        this.mainHeaderSelection ^= 1;
+      },
+      panelSwitch: function (e) {
+        console.log("Running panelSwitch");
+        if(!this.$.core_drawer_panel.narrow) {
+          this.$.core_drawer_panel.forceNarrow = !this.$.core_drawer_panel.forceNarrow;
+        } else {
+          if(this.$.core_drawer_panel.forceNarrow) {
+            this.$.core_drawer_panel.forceNarrow = !this.$.core_drawer_panel.forceNarrow;
+            this.$.core_drawer_panel.openDrawer();
+          } else {
+            this.$.core_drawer_panel.openDrawer();
+          };
+        };
+        console.log(this.$.core_drawer_panel.selected);
+        console.log(this.$.core_drawer_panel.forceNarrow);
+      }
+    });
+
+  </script>
+
+</polymer-element>
