@@ -1,0 +1,13 @@
+{
+  "name": "splend-setup",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer#master",
+    "core-drawer-panel": "Polymer/core-drawer-panel#master",
+    "paper-tabs": "Polymer/paper-tabs#master",
+    "core-icon-buttons": "Polymer/core-icon-button#master",
+    "core-toolbar": "Polymer/core-toolbar#master",
+    "core-animated-pages": "Polymer/core-animated-pages#master",
+    "core-header-panel": "Polymer/core-header-panel#master"
+  }
+}
