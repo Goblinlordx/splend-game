@@ -235,7 +235,6 @@
         this.mainHeaderSelection ^= 1;
       },
       panelSwitch: function (e) {
-        console.log("Running panelSwitch");
         if(!this.$.core_drawer_panel.narrow) {
           this.$.core_drawer_panel.forceNarrow = !this.$.core_drawer_panel.forceNarrow;
         } else {
@@ -246,8 +245,6 @@
             this.$.core_drawer_panel.openDrawer();
           };
         };
-        console.log(this.$.core_drawer_panel.selected);
-        console.log(this.$.core_drawer_panel.forceNarrow);
       }
     });
 
