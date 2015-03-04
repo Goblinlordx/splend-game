@@ -1,2 +1,3 @@
 site-shell/node_modules/*
 site-shell/npm-debug.log
+site-shell/public/bower_components/*
