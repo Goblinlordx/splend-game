@@ -2,4 +2,15 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
   var socket = io();
+  socket.on('data', function (data) {
+     switch(data.type) {
+        case 'hello':
+            console.log('socket.io: Received HELLO from server');
+            break;
+        default:
+            console.log('socket.io: Unknown message type received from server');
+            console.log(data);
+            break;
+     };
+  });
 </script>

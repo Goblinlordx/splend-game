@@ -11,9 +11,27 @@ module.exports = function(io){
 
   io.on('connection', function (socket) {
     console.log('SOCKET.IO: a user connected');
-
-    // do things
-
+    
+    /*
+    *  Client hello
+    */
+    socket.emit('data', { type: 'hello' });
+    
+    
+    /*
+    *  Disconnection detection
+    */
+    socket.on('disconnect', function(){
+      console.log('SOCKET.IO: User disconnected');
+    });
+    
+    /*
+    *  Enter chat room
+    */
+    socket.on('enter-chat', function(roomId) {
+      console.log('SOCKET.IO: User entered chatroom id#: ' + roomId);
+    });
+    
   });
 
   return io; // so it can be used in app.js ( if need be )
