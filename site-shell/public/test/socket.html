@@ -2,15 +2,35 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
   var socket = io();
+  var conStatus = false;
   socket.on('data', function (data) {
-     switch(data.type) {
-        case 'hello':
-            console.log('socket.io: Received HELLO from server');
-            break;
-        default:
-            console.log('socket.io: Unknown message type received from server');
-            console.log(data);
-            break;
+      console.log('socket.io: Connected to server.')
+      switch(data.type) {
+         case 'hello':
+             console.log('socket.io: Received HELLO from server');
+             conStatus = true;
+             
+             /*
+             *  Server connection detected
+             *  TODO - Change indicator state here to 'server connection established'
+             */
+             
+             break;
+         default:
+             console.log('socket.io: Unknown message type received from server');
+             console.log(data);
+             break;
      };
+     
+     
+    socket.on('disconnect', function(){
+      console.log('socket.io: Server connection lost.');
+             
+             /*
+             *  Server disconnect detected
+             *  TODO - Change indicator state here to 'Server connection lost: Now running in offline mode'
+             */
+             conStatus = false;
+    });
   });
 </script>
